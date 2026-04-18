@@ -1,0 +1,21 @@
+# Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+*.launch
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders/
+
+# Eclipse Plugin/OSGi
+*.class
+
+# macOS
+.DS_Store
