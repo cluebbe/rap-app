@@ -6,6 +6,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+import rap.app.AppState;
 import rap.app.Navigator;
 
 public class MainView extends ViewPart {
@@ -20,9 +21,10 @@ public class MainView extends ViewPart {
         layout.verticalSpacing = 0;
         parent.setLayout(layout);
 
+        AppState appState = new AppState();
         Navigator navigator = new Navigator();
 
-        NavBar navBar = new NavBar(parent, navigator);
+        NavBar navBar = new NavBar(parent, navigator, appState);
         navBar.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
         Composite contentArea = new Composite(parent, SWT.NONE);
@@ -32,11 +34,28 @@ public class MainView extends ViewPart {
 
         HomeView homeView = new HomeView(contentArea, SWT.NONE);
         DashboardView dashboardView = new DashboardView(contentArea, SWT.NONE);
+        LoginView loginView = new LoginView(contentArea, SWT.NONE, navigator, appState);
         stackLayout.topControl = homeView;
 
         navigator.setHandler(page -> {
-            stackLayout.topControl = "dashboard".equals(page) ? dashboardView : homeView;
+            switch (page) {
+                case "dashboard":
+                    stackLayout.topControl = appState.isLoggedIn() ? dashboardView : loginView;
+                    break;
+                case "login":
+                    stackLayout.topControl = loginView;
+                    break;
+                default:
+                    stackLayout.topControl = homeView;
+            }
             contentArea.layout(true, true);
+        });
+
+        appState.addChangeListener(() -> {
+            if (!appState.isLoggedIn()) {
+                stackLayout.topControl = homeView;
+                contentArea.layout(true, true);
+            }
         });
     }
 
