@@ -5,6 +5,20 @@
       <entrypoint
             id="rap.app.entrypoint"
             class="rap.app.AppEntryPoint"
-            path="/hello"/>
+            path="/app"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.perspectives">
+      <perspective
+            id="rap.app.perspective"
+            class="rap.app.ui.Perspective"
+            name="App"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.views">
+      <view
+            id="rap.app.mainView"
+            class="rap.app.ui.MainView"
+            name="Main"/>
    </extension>
 </plugin>
